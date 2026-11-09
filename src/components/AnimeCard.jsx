@@ -13,6 +13,8 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
     anime.year ||
     (anime.startDate ? new Date(anime.startDate).getFullYear() : undefined) ||
     anime.aired?.prop?.from?.year
+  const title =
+    anime.title.length > 50 ? anime.title.slice(0, 47).trimEnd().concat(`...`) : anime.title
 
   async function handleRecommendations() {
     if (malId == null) {
@@ -75,7 +77,7 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
           component="h3"
           sx={{ lineHeight: 1.3, color: '#f3f4f6' }}
         >
-          {anime.title}
+          {title}
         </MUI.Typography>
         <MUI.Typography
           variant="body2"
