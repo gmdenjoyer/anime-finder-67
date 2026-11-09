@@ -69,7 +69,7 @@ function AiringNow() {
           }}
         >
           {anime.map((item) => (
-            <MUI.Box component="li" key={item.mal_id}>
+            <MUI.Box component="li" key={item.malId ?? item.mal_id}>
               <AnimeCard anime={item} />
             </MUI.Box>
           ))}

@@ -10,6 +10,7 @@ import { searchAnime } from '../services/animeApi.js'
 function Search() {
   const [results, setResults] = useState([])
   const [recommendations, setRecommendations] = useState([])
+  const [recommendationPage, setRecommendationPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [hasSearched, setHasSearched] = useState(false)
@@ -18,6 +19,7 @@ function Search() {
     if (!query) {
       setResults([])
       setRecommendations([])
+      setRecommendationPage(1)
       setError('')
       setHasSearched(false)
       return
@@ -28,6 +30,7 @@ function Search() {
     setHasSearched(true)
     setResults([])
     setRecommendations([])
+    setRecommendationPage(1)
 
     try {
       setResults(await searchAnime(query))
@@ -43,8 +46,14 @@ function Search() {
     }
   }
 
+  const recommendationPageCount = Math.ceil(recommendations.length / 5)
+  const visibleRecommendations = recommendations.slice(
+    (recommendationPage - 1) * 5,
+    recommendationPage * 5,
+  )
+
   return (
-    <MUI.Container component="main" maxWidth="md" sx={{ py: 5 }}>
+    <MUI.Container component="main" maxWidth="xl" sx={{ py: 5 }}>
       <MUI.Typography component="h1" variant="h4" sx={{ mb: 2 }}>
         Search anime
       </MUI.Typography>
@@ -70,7 +79,9 @@ function Search() {
             display: 'grid',
             gridTemplateColumns: {
               xs: '1fr',
-              md: recommendations.length > 0 ? 'minmax(0, 2fr) minmax(260px, 1fr)' : '1fr',
+              md: recommendations.length > 0
+                ? 'minmax(0, 2fr) 1px minmax(260px, 1fr)'
+                : '1fr',
             },
             alignItems: 'start',
             gap: 3,
@@ -93,17 +104,20 @@ function Search() {
               }}
             >
               {results.map((anime) => (
-                <MUI.Box component="li" key={anime.mal_id}>
+                <MUI.Box component="li" key={anime.malId ?? anime.mal_id}>
                   <AnimeCard
                     anime={anime}
                     onRecommendationsLoaded={(newRecommendations) => {
+                      setRecommendationPage(1)
                       setRecommendations((current) => {
-                        const seen = new Set(current.map(({ entry }) => entry.mal_id))
+                        const getId = (item) => item.malId ?? item.mal_id
+                        const seen = new Set(current.map(getId))
                         return [
                           ...current,
-                          ...newRecommendations.filter(({ entry }) => {
-                            if (seen.has(entry.mal_id)) return false
-                            seen.add(entry.mal_id)
+                          ...newRecommendations.filter((item) => {
+                            const id = getId(item)
+                            if (id == null || seen.has(id)) return false
+                            seen.add(id)
                             return true
                           }),
                         ]
@@ -116,6 +130,23 @@ function Search() {
           </MUI.Box>
 
           {recommendations.length > 0 && (
+            <>
+              <MUI.Divider
+                sx={{
+                  display: { xs: 'block', md: 'none' },
+                  borderColor: '#51495e',
+                  my: 1,
+                }}
+              />
+              <MUI.Divider
+                orientation="vertical"
+                flexItem
+                sx={{
+                  display: { xs: 'none', md: 'block' },
+                  borderColor: '#51495e',
+                  justifySelf: 'center',
+                }}
+              />
             <MUI.Box component="aside" aria-labelledby="recommendations-heading">
               <MUI.Typography
                 id="recommendations-heading"
@@ -135,13 +166,43 @@ function Search() {
                   m: 0,
                 }}
               >
-                {recommendations.map(({ entry }) => (
-                  <MUI.Box component="li" key={entry.mal_id}>
-                    <AnimeCard anime={entry} />
+                {visibleRecommendations.map((anime) => (
+                  <MUI.Box component="li" key={anime.malId ?? anime.mal_id}>
+                    <AnimeCard anime={anime} />
                   </MUI.Box>
                 ))}
               </MUI.Box>
+              {recommendationPageCount > 1 && (
+                <MUI.Pagination
+                  count={recommendationPageCount}
+                  page={recommendationPage}
+                  onChange={(_, page) => setRecommendationPage(page)}
+                  aria-label="Recommendations pages"
+                  sx={{
+                    mt: 2,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    '& .MuiPaginationItem-root': {
+                      color: '#f3f4f6',
+                      bgcolor: '#292631',
+                      border: '1px solid #51495e',
+                      '&:hover': { bgcolor: '#393344' },
+                      '&.Mui-selected': {
+                        color: '#17131f',
+                        bgcolor: '#d8a8ff',
+                        borderColor: '#d8a8ff',
+                        '&:hover': { bgcolor: '#c084fc' },
+                      },
+                      '&.Mui-disabled': {
+                        color: '#777184',
+                        borderColor: '#393344',
+                      },
+                    },
+                  }}
+                />
+              )}
             </MUI.Box>
+            </>
           )}
         </MUI.Box>
       )}

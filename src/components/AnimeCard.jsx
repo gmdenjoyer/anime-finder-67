@@ -6,15 +6,25 @@ import { getAnimeRecommendations } from '../services/animeApi.js'
 function AnimeCard({ anime, onRecommendationsLoaded }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const image = anime.images?.jpg?.image_url || anime.images?.webp?.image_url
-  const year = anime.year || anime.aired?.prop?.from?.year
+  const malId = anime.malId ?? anime.mal_id
+  const image =
+    anime.imageUrl || anime.images?.jpg?.image_url || anime.images?.webp?.image_url
+  const year =
+    anime.year ||
+    (anime.startDate ? new Date(anime.startDate).getFullYear() : undefined) ||
+    anime.aired?.prop?.from?.year
 
   async function handleRecommendations() {
+    if (malId == null) {
+      setError('Cannot load recommendations: anime ID is missing.')
+      return
+    }
+
     setLoading(true)
     setError('')
 
     try {
-      const recommendations = await getAnimeRecommendations(anime.mal_id)
+      const recommendations = await getAnimeRecommendations(malId)
       onRecommendationsLoaded(recommendations)
     } catch {
       setError('Could not load recommendations. Please try again.')
@@ -24,7 +34,15 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
   }
 
   return (
-    <MUI.Card sx={{ display: 'flex', height: '100%' }}>
+    <MUI.Card
+      sx={{
+        display: 'flex',
+        height: '100%',
+        bgcolor: '#211d2b',
+        color: '#f3f4f6',
+        border: '1px solid #393344',
+      }}
+    >
       {image ? (
         <MUI.CardMedia
           component="img"
@@ -41,8 +59,8 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
             flexShrink: 0,
             display: 'grid',
             placeItems: 'center',
-            bgcolor: 'action.hover',
-            color: 'text.secondary',
+            bgcolor: '#292631',
+            color: '#c4bfcc',
             typography: 'caption',
             textAlign: 'center',
             p: 1,
@@ -52,10 +70,17 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
         </MUI.Box>
       )}
       <MUI.CardContent sx={{ minWidth: 0, flexGrow: 1 }}>
-        <MUI.Typography variant="h6" component="h3" sx={{ lineHeight: 1.3 }}>
+        <MUI.Typography
+          variant="h6"
+          component="h3"
+          sx={{ lineHeight: 1.3, color: '#f3f4f6' }}
+        >
           {anime.title}
         </MUI.Typography>
-        <MUI.Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+        <MUI.Typography
+          variant="body2"
+          sx={{ mt: 0.5, color: '#c4bfcc' }}
+        >
           {[year, anime.type].filter(Boolean).join(' · ') || 'Year and type unavailable'}
         </MUI.Typography>
         {onRecommendationsLoaded && (
@@ -63,7 +88,12 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
             size="small"
             onClick={handleRecommendations}
             disabled={loading}
-            sx={{ mt: 1, ml: -1 }}
+            sx={{
+              mt: 1,
+              ml: -1,
+              color: '#d8a8ff',
+              '&:hover': { bgcolor: 'rgba(216, 168, 255, 0.12)' },
+            }}
           >
             {loading ? 'Loading…' : 'Get recommendations'}
           </MUI.Button>
