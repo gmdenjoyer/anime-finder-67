@@ -2,12 +2,44 @@
 // eslint-disable-next-line no-unused-vars
 import * as Router from 'react-router-dom'
 // eslint-disable-next-line no-unused-vars
+import * as MUI from '@mui/material'
+// eslint-disable-next-line no-unused-vars
 import Navbar from './components/Navbar.jsx'
+
+// eslint-disable-next-line no-unused-vars
+function HomePage() {
+  return (
+    <MUI.Container
+      component="main"
+      maxWidth="md"
+      sx={{ py: { xs: 6, sm: 10 }, textAlign: 'center' }}
+    >
+      <MUI.Typography
+        component="h1"
+        variant="h3"
+        sx={{ mb: 2, fontWeight: 700 }}
+      >
+        Welcome to Anime Finder
+      </MUI.Typography>
+      <MUI.Typography
+        variant="h6"
+        color="text.secondary"
+        sx={{ maxWidth: 680, mx: 'auto', lineHeight: 1.7 }}
+      >
+        Discover anime that suits you. Browse what is airing now, search for a
+        series, or find something unexpected with a random recommendation.
+      </MUI.Typography>
+    </MUI.Container>
+  )
+}
 
 function App() {
   return (
     <Router.BrowserRouter>
       <Navbar />
+      <Router.Routes>
+        <Router.Route path="/" element={<HomePage />} />
+      </Router.Routes>
     </Router.BrowserRouter>
   )
 }

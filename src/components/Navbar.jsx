@@ -4,7 +4,8 @@ import * as MUI from '@mui/material'
 import { NavLink } from 'react-router-dom'
 
 const navigationItems = [
-  { label: 'Airing now', to: '/' },
+  { label: 'Home', to: '/' },
+  { label: 'Airing now', to: '/airingnow' },
   { label: 'Search', to: '/search' },
   { label: 'Random', to: '/random' },
 ]
@@ -28,8 +29,6 @@ function Navbar() {
         }}
       >
         <MUI.Typography
-          component={NavLink}
-          to="/"
           sx={{
             color: 'common.white',
             fontSize: '1.2rem',
