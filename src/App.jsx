@@ -5,6 +5,10 @@ import * as Router from 'react-router-dom'
 import * as MUI from '@mui/material'
 // eslint-disable-next-line no-unused-vars
 import Navbar from './components/Navbar.jsx'
+// eslint-disable-next-line no-unused-vars
+import Search from './pages/Search.jsx'
+// eslint-disable-next-line no-unused-vars
+import AiringNow from './pages/AiringNow.jsx'
 
 // eslint-disable-next-line no-unused-vars
 function HomePage() {
@@ -39,6 +43,8 @@ function App() {
       <Navbar />
       <Router.Routes>
         <Router.Route path="/" element={<HomePage />} />
+        <Router.Route path="/airingnow" element={<AiringNow />} />
+        <Router.Route path="/search" element={<Search />} />
       </Router.Routes>
     </Router.BrowserRouter>
   )

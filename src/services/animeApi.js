@@ -1,9 +1,13 @@
-const BASE_URL = "https://api.jikan.moe/v4";
+const BASE_URL = "https://jikan.lucashdo.com/v1";
 
 export async function getSeasonNow() {
     const response = await fetch(
         `${BASE_URL}/seasons/now`
     );
+
+    if (!response.ok) {
+        throw new Error(`API response code: ${response.status}`);
+    }
 
     const data = await response.json();
     return data.data;
@@ -11,8 +15,12 @@ export async function getSeasonNow() {
 
 export async function searchAnime(query) {
     const response = await fetch(
-        `${BASE_URL}/anime?q=${query}`
+        `${BASE_URL}/anime?${new URLSearchParams({ q: query })}`
     );
+
+    if (!response.ok) {
+        throw new Error(`API response code: ${response.status}`);
+    }
 
     const data = await response.json();
     return data.data;
@@ -31,6 +39,10 @@ export async function getAnimeRecommendations(id) {
     const response = await fetch(
         `${BASE_URL}/anime/${id}/recommendations`
     );
+
+    if (!response.ok) {
+        throw new Error(`Anime recommendations failed with status ${response.status}`);
+    }
 
     const data = await response.json();
     return data.data;
