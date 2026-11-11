@@ -9,12 +9,41 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
     const malId = anime.malId ?? anime.mal_id
     const image =
         anime.imageUrl || anime.images?.jpg?.image_url || anime.images?.webp?.image_url
-    const year =
-        anime.year ||
-        (anime.startDate ? new Date(anime.startDate).getFullYear() : undefined) ||
-        anime.aired?.prop?.from?.year
+    const year = (() => {
+        const candidates = [
+            anime.year,
+            anime.startDate.substring(0,4),
+            anime.aired?.prop?.from?.year,
+            anime.aired?.from,
+        ]
+
+        for (const candidate of candidates) {
+            if (candidate == null || candidate === '') continue
+
+            if (typeof candidate === 'number' && Number.isFinite(candidate)) {
+                return candidate
+            }
+
+            if (typeof candidate === 'string') {
+                const numericValue = Number(candidate)
+                if (Number.isFinite(numericValue)) {
+                    return numericValue
+                }
+
+                const parsedDate = new Date(candidate)
+                if (!Number.isNaN(parsedDate.getTime())) {
+                    return parsedDate.getFullYear()
+                }
+            }
+        }
+
+        return undefined
+    })()
     const title =
         anime.title.length > 50 ? anime.title.slice(0, 47).trimEnd().concat(`...`) : anime.title
+    const type = anime.type
+    const episodeText = 
+        anime.episodes == null ? "" : anime.episodes === 1 ? "1 episode" : anime.episodes + " episodes"
 
     async function handleRecommendations() {
         if (malId == null) {
@@ -83,7 +112,7 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
                     variant="body2"
                     sx={{ mt: 0.5, color: '#c4bfcc' }}
                 >
-                    {[year, anime.type].filter(Boolean).join(' · ') || 'Year and type unavailable'}
+                    {[year, type, episodeText].filter(Boolean).join(' · ') || ''}
                 </MUI.Typography>
                 {onRecommendationsLoaded && (
                     <MUI.Button

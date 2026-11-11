@@ -43,7 +43,36 @@ function RandomAnime() {
     const studios = (anime?.studios ?? []).map((studio) => studio.name).join(', ') || 'N/A'
     const title = anime?.title_english || anime?.title || 'Unknown anime'
     const score = anime?.score ?? 'N/A'
-    const year = anime?.year || anime?.aired?.prop?.from?.year || 'N/A'
+    const year = (() => {
+        const candidates = [
+            anime?.year,
+            anime?.startDate,
+            anime?.aired?.prop?.from?.year,
+            anime?.aired?.from,
+        ]
+
+        for (const candidate of candidates) {
+            if (candidate == null || candidate === '') continue
+
+            if (typeof candidate === 'number' && Number.isFinite(candidate)) {
+                return candidate
+            }
+
+            if (typeof candidate === 'string') {
+                const numericValue = Number(candidate)
+                if (Number.isFinite(numericValue)) {
+                    return numericValue
+                }
+
+                const parsedDate = new Date(candidate)
+                if (!Number.isNaN(parsedDate.getTime())) {
+                    return parsedDate.getFullYear()
+                }
+            }
+        }
+
+        return 'N/A'
+    })()
     const episodes = anime?.episodes ?? 'N/A'
     const status = anime?.status || 'N/A'
     const synopsis = anime?.synopsis || 'No synopsis available.'
