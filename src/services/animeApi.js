@@ -31,6 +31,10 @@ export async function getRandomAnime() {
         `${BASE_URL}/random/anime`
     );
 
+    if (!response.ok) {
+        throw new Error(`API response code: ${response.status}`);
+    }
+
     const data = await response.json();
     return data.data;
 }
