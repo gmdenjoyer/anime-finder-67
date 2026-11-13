@@ -54,9 +54,6 @@ function Search() {
 
     return (
         <MUI.Container component="main" maxWidth="xl" sx={{ py: 5 }}>
-            <MUI.Typography component="h1" variant="h4" sx={{ mb: 2 }}>
-                Search anime
-            </MUI.Typography>
             <Searchbar onSearch={handleSearch} />
 
             {loading && (

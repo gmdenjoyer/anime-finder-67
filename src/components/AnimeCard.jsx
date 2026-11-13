@@ -7,12 +7,15 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
     const malId = anime.malId ?? anime.mal_id
+    const myAnimeListUrl = malId == null
+        ? ''
+        : `https://myanimelist.net/anime/${encodeURIComponent(malId)}`
     const image =
         anime.imageUrl || anime.images?.jpg?.image_url || anime.images?.webp?.image_url
     const year = (() => {
         const candidates = [
             anime.year,
-            anime.startDate.substring(0,4),
+            anime.startDate,
             anime.aired?.prop?.from?.year,
             anime.aired?.from,
         ]
@@ -114,21 +117,36 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
                 >
                     {[year, type, episodeText].filter(Boolean).join(' · ') || ''}
                 </MUI.Typography>
-                {onRecommendationsLoaded && (
-                    <MUI.Button
-                        size="small"
-                        onClick={handleRecommendations}
-                        disabled={loading}
-                        sx={{
-                            mt: 1,
-                            ml: -1,
-                            color: '#e6ac3d',
-                            '&:hover': { bgcolor: 'rgba(234, 175, 65, 0.14)' },
-                        }}
-                    >
-                        {loading ? 'Loading…' : 'Get recommendations'}
-                    </MUI.Button>
-                )}
+                <MUI.Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
+                    {myAnimeListUrl && (
+                        <MUI.Button
+                            size="small"
+                            component="a"
+                            href={myAnimeListUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            sx={{
+                                color: '#e6ac3d',
+                                '&:hover': { bgcolor: 'rgba(234, 175, 65, 0.14)' },
+                            }}
+                        >
+                            Show on MyAnimeList
+                        </MUI.Button>
+                    )}
+                    {onRecommendationsLoaded && (
+                        <MUI.Button
+                            size="small"
+                            onClick={handleRecommendations}
+                            disabled={loading}
+                            sx={{
+                                color: '#e6ac3d',
+                                '&:hover': { bgcolor: 'rgba(234, 175, 65, 0.14)' },
+                            }}
+                        >
+                            {loading ? 'Loading…' : 'Get recommendations'}
+                        </MUI.Button>
+                    )}
+                </MUI.Box>
                 {error && (
                     <MUI.Alert severity="error" sx={{ mt: 1, py: 0 }}>
                         {error}

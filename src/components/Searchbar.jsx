@@ -19,6 +19,7 @@ export default function Searchbar({ onSearch }) {
                 gap: 1,
                 width: '100%',
                 maxWidth: 640,
+                mx: 'auto',
                 alignItems: 'flex-start',
             }}
         >

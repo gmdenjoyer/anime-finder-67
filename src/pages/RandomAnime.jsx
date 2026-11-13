@@ -38,6 +38,10 @@ function RandomAnime() {
         anime?.images?.webp?.large_image_url ||
         anime?.images?.webp?.image_url ||
         ''
+    const myAnimeListId = anime?.mal_id ?? anime?.malId
+    const myAnimeListUrl = myAnimeListId == null
+        ? ''
+        : `https://myanimelist.net/anime/${encodeURIComponent(myAnimeListId)}`
 
     const genres = (anime?.genres ?? []).map((genre) => genre.name).join(', ') || 'N/A'
     const studios = (anime?.studios ?? []).map((studio) => studio.name).join(', ') || 'N/A'
@@ -79,19 +83,7 @@ function RandomAnime() {
 
     return (
         <MUI.Container component="main" maxWidth="lg" sx={{ py: 5 }}>
-            <MUI.Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: { xs: 'column', sm: 'row' },
-                    alignItems: { xs: 'stretch', sm: 'center' },
-                    justifyContent: 'space-between',
-                    gap: 2,
-                    mb: 3,
-                }}
-            >
-                <MUI.Typography component="h1" variant="h4">
-                    Random anime
-                </MUI.Typography>
+            <MUI.Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 3 }}>
                 <MUI.Button
                     variant="contained"
                     onClick={loadRandomAnime}
@@ -202,6 +194,27 @@ function RandomAnime() {
                                     />
                                 ))}
                             </MUI.Box>
+
+                            {myAnimeListUrl && (
+                                <MUI.Button
+                                    component="a"
+                                    href={myAnimeListUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    sx={{
+                                        mb: 2,
+                                        color: '#e6ac3d',
+                                        borderColor: '#e6ac3d',
+                                        '&:hover': {
+                                            borderColor: '#e4a039',
+                                            bgcolor: 'rgba(234, 175, 65, 0.14)',
+                                        },
+                                    }}
+                                    variant="outlined"
+                                >
+                                    Show on MyAnimeList
+                                </MUI.Button>
+                            )}
 
                             <MUI.Typography variant="body1" sx={{ color: '#ead8c2', mb: 2 }}>
                                 <MUI.Box component="span" sx={{ fontWeight: 700, color: '#e6ac3d' }}>
