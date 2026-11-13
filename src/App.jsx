@@ -29,20 +29,27 @@ function HomePage() {
             maxWidth="md"
             sx={{ py: { xs: 6, sm: 10 }, textAlign: 'center' }}
         >
+            <MUI.Box
+                component="img"
+                src={`${import.meta.env.BASE_URL}favicon.svg`}
+                alt="Anime Finder logo"
+                sx={{ width: 96, height: 96, objectFit: 'contain', mb: 2 }}
+            />
             <MUI.Typography
                 component="h1"
                 variant="h3"
                 sx={{ mb: 2, fontWeight: 700 }}
             >
-                Welcome to Anime Finder
+                Welcome to Anime Finder 67
             </MUI.Typography>
             <MUI.Typography
                 variant="h6"
                 color="text.secondary"
                 sx={{ maxWidth: 680, mx: 'auto', lineHeight: 1.7 }}
             >
-                Discover anime that suits you. Browse what is airing now, search for a
-                series, or find something unexpected with a random recommendation.
+                Discover anime that suits you. Browse what is airing now,
+                find recommendations based on shows you already like with the search feature,
+                or find something unexpected with a random recommendation.
             </MUI.Typography>
         </MUI.Container>
     )
