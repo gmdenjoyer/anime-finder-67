@@ -23,9 +23,20 @@ function AiringNow() {
                 const seasonAnime = await getSeasonNow()
                 if (!active) return
 
-                setAnime(seasonAnime)
-                setVisibleAnime(seasonAnime.slice(0, PAGE_SIZE))
-                setHasMore(seasonAnime.length > PAGE_SIZE)
+                const sortedAnime = [...seasonAnime].sort((a, b) => {
+                    const scoreA = Number(a.score)
+                    const scoreB = Number(b.score)
+                    const hasScoreA = a.score != null && a.score !== '' && Number.isFinite(scoreA)
+                    const hasScoreB = b.score != null && b.score !== '' && Number.isFinite(scoreB)
+
+                    if (!hasScoreA) return hasScoreB ? 1 : 0
+                    if (!hasScoreB) return -1
+                    return scoreB - scoreA
+                })
+
+                setAnime(sortedAnime)
+                setVisibleAnime(sortedAnime.slice(0, PAGE_SIZE))
+                setHasMore(sortedAnime.length > PAGE_SIZE)
             } catch (requestError) {
                 if (!active) return
 
@@ -70,43 +81,48 @@ function AiringNow() {
             )}
 
             {!loading && anime.length > 0 && (
-                <InfiniteScroll
-                    dataLength={visibleAnime.length}
-                    next={fetchMoreAnime}
-                    hasMore={hasMore}
-                    loader={
-                        <MUI.Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}>
-                            <MUI.CircularProgress aria-label="Loading more anime" size={24} />
-                        </MUI.Box>
-                    }
-                    endMessage={
-                        <MUI.Typography sx={{ textAlign: 'center', color: '#d6bfa9', py: 2 }}>
-                            You’ve reached the end of the list.
-                        </MUI.Typography>
-                    }
-                >
-                    <MUI.Box
-                        component="ul"
-                        sx={{
-                            display: 'grid',
-                            gridTemplateColumns: {
-                                xs: '1fr',
-                                sm: 'repeat(2, minmax(0, 1fr))',
-                                lg: 'repeat(3, minmax(0, 1fr))',
-                            },
-                            gap: 2,
-                            listStyle: 'none',
-                            p: 0,
-                            m: 0,
-                        }}
-                    >
-                        {visibleAnime.map((item) => (
-                            <MUI.Box component="li" key={item.malId ?? item.mal_id}>
-                                <AnimeCard anime={item} />
+                <>
+                    <MUI.Typography sx={{ mb: 2, color: '#d6bfa9' }}>
+                        Anime airing now, ordered by rating from highest to lowest. Titles without a rating appear last.
+                    </MUI.Typography>
+                    <InfiniteScroll
+                        dataLength={visibleAnime.length}
+                        next={fetchMoreAnime}
+                        hasMore={hasMore}
+                        loader={
+                            <MUI.Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}>
+                                <MUI.CircularProgress aria-label="Loading more anime" size={24} />
                             </MUI.Box>
-                        ))}
-                    </MUI.Box>
-                </InfiniteScroll>
+                        }
+                        endMessage={
+                            <MUI.Typography sx={{ textAlign: 'center', color: '#d6bfa9', py: 2 }}>
+                                You’ve reached the end of the list.
+                            </MUI.Typography>
+                        }
+                    >
+                        <MUI.Box
+                            component="ul"
+                            sx={{
+                                display: 'grid',
+                                gridTemplateColumns: {
+                                    xs: '1fr',
+                                    sm: 'repeat(2, minmax(0, 1fr))',
+                                    lg: 'repeat(3, minmax(0, 1fr))',
+                                },
+                                gap: 2,
+                                listStyle: 'none',
+                                p: 0,
+                                m: 0,
+                            }}
+                        >
+                            {visibleAnime.map((item) => (
+                                <MUI.Box component="li" key={item.malId ?? item.mal_id}>
+                                    <AnimeCard anime={item} />
+                                </MUI.Box>
+                            ))}
+                        </MUI.Box>
+                    </InfiniteScroll>
+                </>
             )}
         </MUI.Container>
     )
