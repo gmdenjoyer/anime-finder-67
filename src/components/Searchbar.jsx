@@ -32,14 +32,14 @@ export default function Searchbar({ onSearch }) {
                 fullWidth
                 sx={{
                     '& .MuiOutlinedInput-root': {
-                        color: '#eaf3ff',
-                        bgcolor: '#102641',
-                        '& fieldset': { borderColor: '#456789' },
-                        '&:hover fieldset': { borderColor: '#60a5fa' },
-                        '&.Mui-focused fieldset': { borderColor: '#93c5fd' },
+                        color: '#f3e5d4',
+                        bgcolor: '#26090b',
+                        '& fieldset': { borderColor: '#70040c' },
+                        '&:hover fieldset': { borderColor: '#e6ac3d' },
+                        '&.Mui-focused fieldset': { borderColor: '#e6ac3d' },
                     },
                     '& input::placeholder': {
-                        color: '#b6c8de',
+                        color: '#d6bfa9',
                         opacity: 1,
                     },
                 }}

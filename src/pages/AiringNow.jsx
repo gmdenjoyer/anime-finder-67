@@ -80,7 +80,7 @@ function AiringNow() {
                         </MUI.Box>
                     }
                     endMessage={
-                        <MUI.Typography sx={{ textAlign: 'center', color: '#b6c8de', py: 2 }}>
+                        <MUI.Typography sx={{ textAlign: 'center', color: '#d6bfa9', py: 2 }}>
                             You’ve reached the end of the list.
                         </MUI.Typography>
                     }

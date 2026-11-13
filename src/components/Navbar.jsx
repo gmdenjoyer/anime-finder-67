@@ -12,7 +12,7 @@ const navigationItems = [
 
 function Navbar() {
     return (
-        <MUI.AppBar position="static" elevation={0} sx={{ bgcolor: '#0a1c33' }}>
+        <MUI.AppBar position="static" elevation={0} sx={{ bgcolor: '#170203' }}>
             <MUI.Toolbar
                 component="nav"
                 aria-label="Main navigation"
@@ -28,8 +28,11 @@ function Navbar() {
                     gap: 0.5,
                 }}
             >
-                <MUI.Typography
+                <MUI.Box
                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
                         color: 'common.white',
                         fontSize: '1.2rem',
                         fontWeight: 700,
@@ -37,8 +40,17 @@ function Navbar() {
                         whiteSpace: 'nowrap',
                     }}
                 >
-                    Anime Finder
-                </MUI.Typography>
+                    <MUI.Box
+                        component="img"
+                        src={`${import.meta.env.BASE_URL}favicon.svg`}
+                        alt=""
+                        aria-hidden="true"
+                        sx={{ width: 32, height: 32, objectFit: 'contain' }}
+                    />
+                    <MUI.Typography component="span" sx={{ fontSize: 'inherit', fontWeight: 'inherit' }}>
+                        Anime Finder
+                    </MUI.Typography>
+                </MUI.Box>
 
                 <MUI.Box
                     sx={{
@@ -66,8 +78,8 @@ function Navbar() {
                                     bgcolor: 'rgba(255, 255, 255, 0.08)',
                                 },
                                 '&.active': {
-                                    color: '#93c5fd',
-                                    bgcolor: 'rgba(96, 165, 250, 0.16)',
+                                    color: '#e6ac3d',
+                                    bgcolor: 'rgba(234, 175, 65, 0.14)',
                                 },
                             }}
                         >

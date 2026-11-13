@@ -14,9 +14,10 @@ import RandomAnime from './pages/RandomAnime.jsx'
 const theme = MUI.createTheme({
     palette: {
         mode: 'dark',
-        primary: { main: '#60a5fa' },
-        background: { default: '#071426', paper: '#102641' },
-        text: { primary: '#eaf3ff', secondary: '#b6c8de' },
+        primary: { main: '#e6ac3d', contrastText: '#170203' },
+        secondary: { main: '#b9101e' },
+        background: { default: '#100100', paper: '#26090b' },
+        text: { primary: '#f3e5d4', secondary: '#d6bfa9' },
     },
 })
 

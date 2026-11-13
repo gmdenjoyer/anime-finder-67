@@ -134,7 +134,7 @@ function Search() {
                             <MUI.Divider
                                 sx={{
                                     display: { xs: 'block', md: 'none' },
-                                    borderColor: '#244668',
+                                    borderColor: '#5b1215',
                                     my: 1,
                                 }}
                             />
@@ -143,7 +143,7 @@ function Search() {
                                 flexItem
                                 sx={{
                                     display: { xs: 'none', md: 'block' },
-                                    borderColor: '#244668',
+                                    borderColor: '#5b1215',
                                     justifySelf: 'center',
                                 }}
                             />
@@ -183,19 +183,19 @@ function Search() {
                                             display: 'flex',
                                             justifyContent: 'center',
                                             '& .MuiPaginationItem-root': {
-                                                color: '#eaf3ff',
-                                                bgcolor: '#153457',
-                                                border: '1px solid #31577c',
-                                                '&:hover': { bgcolor: '#1d436b' },
+                                                color: '#f3e5d4',
+                                                bgcolor: '#3d1114',
+                                                border: '1px solid #70040c',
+                                                '&:hover': { bgcolor: '#5b1215' },
                                                 '&.Mui-selected': {
-                                                    color: '#071426',
-                                                    bgcolor: '#60a5fa',
-                                                    borderColor: '#60a5fa',
-                                                    '&:hover': { bgcolor: '#93c5fd' },
+                                                    color: '#170203',
+                                                    bgcolor: '#e6ac3d',
+                                                    borderColor: '#e6ac3d',
+                                                    '&:hover': { bgcolor: '#e4a039' },
                                                 },
                                                 '&.Mui-disabled': {
-                                                    color: '#7f9bb8',
-                                                    borderColor: '#244668',
+                                                    color: '#8e6e62',
+                                                    borderColor: '#5b1215',
                                                 },
                                             },
                                         }}
