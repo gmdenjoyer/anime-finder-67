@@ -60,6 +60,17 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
     const type = anime.type
     const episodeText = 
         anime.episodes == null ? "" : anime.episodes === 1 ? "1 episode" : anime.episodes + " episodes"
+    const actionButtonSx = {
+        width: { xs: '100%', sm: 'auto' },
+        minWidth: 0,
+        display: 'grid',
+        placeItems: 'center',
+        textAlign: 'center',
+        whiteSpace: 'normal',
+        lineHeight: 1.2,
+        color: '#e6ac3d',
+        '&:hover': { bgcolor: 'rgba(234, 175, 65, 0.14)' },
+    }
 
     async function handleRecommendations() {
         if (malId == null) {
@@ -132,9 +143,12 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
                 </MUI.Typography>
                 <MUI.Box
                     sx={{
-                        display: 'flex',
-                        flexDirection: { xs: 'column', sm: 'row' },
-                        alignItems: { xs: 'stretch', sm: 'flex-start' },
+                        display: 'grid',
+                        gridTemplateColumns: {
+                            xs: 'minmax(0, 1fr)',
+                            sm: 'repeat(auto-fit, max-content)',
+                        },
+                        justifyContent: 'start',
                         gap: 1,
                         mt: 1,
                     }}
@@ -146,13 +160,7 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
                             href={myAnimeListUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            sx={{
-                                width: { xs: '100%', sm: 'auto' },
-                                justifyContent: 'center',
-                                textAlign: 'center',
-                                color: '#e6ac3d',
-                                '&:hover': { bgcolor: 'rgba(234, 175, 65, 0.14)' },
-                            }}
+                            sx={actionButtonSx}
                         >
                             Show on MyAnimeList
                         </MUI.Button>
@@ -162,13 +170,7 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
                             size="small"
                             onClick={handleRecommendations}
                             disabled={loading}
-                            sx={{
-                                width: { xs: '100%', sm: 'auto' },
-                                justifyContent: 'center',
-                                textAlign: 'center',
-                                color: '#e6ac3d',
-                                '&:hover': { bgcolor: 'rgba(234, 175, 65, 0.14)' },
-                            }}
+                            sx={actionButtonSx}
                         >
                             {loading ? 'Loading…' : 'Get recommendations'}
                         </MUI.Button>
