@@ -1,5 +1,7 @@
 import { useState } from 'react'
 // eslint-disable-next-line no-unused-vars
+import InfiniteScroll from 'react-infinite-scroll-component'
+// eslint-disable-next-line no-unused-vars
 import * as MUI from '@mui/material'
 // eslint-disable-next-line no-unused-vars
 import Searchbar from '../components/Searchbar.jsx'
@@ -7,8 +9,11 @@ import Searchbar from '../components/Searchbar.jsx'
 import AnimeCard from '../components/AnimeCard.jsx'
 import { searchAnime } from '../services/animeApi.js'
 
+const PAGE_SIZE = 12
+
 function Search() {
     const [results, setResults] = useState([])
+    const [visibleResultCount, setVisibleResultCount] = useState(PAGE_SIZE)
     const [recommendations, setRecommendations] = useState([])
     const [recommendationPage, setRecommendationPage] = useState(1)
     const [loading, setLoading] = useState(false)
@@ -18,6 +23,7 @@ function Search() {
     async function handleSearch(query) {
         if (!query) {
             setResults([])
+            setVisibleResultCount(PAGE_SIZE)
             setRecommendations([])
             setRecommendationPage(1)
             setError('')
@@ -29,11 +35,13 @@ function Search() {
         setError('')
         setHasSearched(true)
         setResults([])
+        setVisibleResultCount(PAGE_SIZE)
         setRecommendations([])
         setRecommendationPage(1)
 
         try {
-            setResults(await searchAnime(query))
+            const searchResults = await searchAnime(query)
+            setResults(searchResults)
         } catch (searchError) {
             setResults([])
             setError(
@@ -47,6 +55,7 @@ function Search() {
     }
 
     const recommendationPageCount = Math.ceil(recommendations.length / 5)
+    const visibleResults = results.slice(0, visibleResultCount)
     const visibleRecommendations = recommendations.slice(
         (recommendationPage - 1) * 5,
         recommendationPage * 5,
@@ -89,41 +98,61 @@ function Search() {
                         <MUI.Typography component="h2" variant="h5" sx={{ mb: 2 }}>
                             Search results
                         </MUI.Typography>
-                        <MUI.Box
-                            component="ul"
-                            sx={{
-                                display: 'grid',
-                                gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' },
-                                gap: 2,
-                                listStyle: 'none',
-                                p: 0,
-                                m: 0,
+                        <InfiniteScroll
+                            dataLength={visibleResults.length}
+                            next={() => {
+                                setVisibleResultCount((count) =>
+                                    Math.min(count + PAGE_SIZE, results.length),
+                                )
                             }}
-                        >
-                            {results.map((anime) => (
-                                <MUI.Box component="li" key={anime.malId ?? anime.mal_id}>
-                                    <AnimeCard
-                                        anime={anime}
-                                        onRecommendationsLoaded={(newRecommendations) => {
-                                            setRecommendationPage(1)
-                                            setRecommendations((current) => {
-                                                const getId = (item) => item.malId ?? item.mal_id
-                                                const seen = new Set(current.map(getId))
-                                                return [
-                                                    ...current,
-                                                    ...newRecommendations.filter((item) => {
-                                                        const id = getId(item)
-                                                        if (id == null || seen.has(id)) return false
-                                                        seen.add(id)
-                                                        return true
-                                                    }),
-                                                ]
-                                            })
-                                        }}
-                                    />
+                            hasMore={visibleResultCount < results.length}
+                            loader={
+                                <MUI.Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}>
+                                    <MUI.CircularProgress aria-label="Loading more search results" size={24} />
                                 </MUI.Box>
-                            ))}
-                        </MUI.Box>
+                            }
+                            endMessage={
+                                <MUI.Typography sx={{ textAlign: 'center', color: '#d6bfa9', py: 2 }}>
+                                    You’ve reached the end of the search results.
+                                </MUI.Typography>
+                            }
+                        >
+                            <MUI.Box
+                                component="ul"
+                                sx={{
+                                    display: 'grid',
+                                    gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' },
+                                    gap: 2,
+                                    listStyle: 'none',
+                                    p: 0,
+                                    m: 0,
+                                }}
+                            >
+                                {visibleResults.map((anime) => (
+                                    <MUI.Box component="li" key={anime.malId ?? anime.mal_id}>
+                                        <AnimeCard
+                                            anime={anime}
+                                            onRecommendationsLoaded={(newRecommendations) => {
+                                                setRecommendationPage(1)
+                                                setRecommendations((current) => {
+                                                    const getId = (item) => item.malId ?? item.mal_id
+                                                    const seen = new Set(current.map(getId))
+                                                    return [
+                                                        ...current,
+                                                        ...newRecommendations.filter((item) => {
+                                                            const id = getId(item)
+                                                            if (id == null || seen.has(id)) return false
+                                                            seen.add(id)
+                                                            return true
+                                                        }),
+                                                    ]
+                                                })
+                                            }}
+                                        />
+                                    </MUI.Box>
+                                ))}
+                            </MUI.Box>
+                        </InfiniteScroll>
                     </MUI.Box>
 
                     {recommendations.length > 0 && (
