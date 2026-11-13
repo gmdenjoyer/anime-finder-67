@@ -1,11 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 // eslint-disable-next-line no-unused-vars
 import * as MUI from '@mui/material'
+import copy from 'copy-to-clipboard'
 import { getAnimeRecommendations } from '../services/animeApi.js'
 
 function AnimeCard({ anime, onRecommendationsLoaded }) {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
+    const [copyMessage, setCopyMessage] = useState('')
+    const copyMessageTimeout = useRef(null)
+
+    useEffect(() => () => clearTimeout(copyMessageTimeout.current), [])
     const malId = anime.malId ?? anime.mal_id
     const myAnimeListUrl = malId == null
         ? ''
@@ -69,7 +74,29 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
         whiteSpace: 'normal',
         lineHeight: 1.2,
         color: '#e6ac3d',
-        '&:hover': { bgcolor: 'rgba(234, 175, 65, 0.14)' },
+        border: '1px solid #e6ac3d',
+        '&:hover': {
+            borderColor: '#e4a039',
+            bgcolor: 'rgba(234, 175, 65, 0.14)',
+        },
+    }
+
+    function showCopyMessage(message) {
+        clearTimeout(copyMessageTimeout.current)
+        setCopyMessage(message)
+        copyMessageTimeout.current = setTimeout(() => {
+            setCopyMessage('')
+            copyMessageTimeout.current = null
+        }, 2000)
+    }
+
+    function handleCopyTitle() {
+        try {
+            const copied = copy(anime.title)
+            showCopyMessage(copied ? 'Title copied to clipboard.' : 'Could not copy title to clipboard.')
+        } catch {
+            showCopyMessage('Could not copy title to clipboard.')
+        }
     }
 
     async function handleRecommendations() {
@@ -175,7 +202,19 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
                             {loading ? 'Loading…' : 'Get recommendations'}
                         </MUI.Button>
                     )}
+                    <MUI.Button
+                        size="small"
+                        onClick={handleCopyTitle}
+                        sx={actionButtonSx}
+                    >
+                        Copy title
+                    </MUI.Button>
                 </MUI.Box>
+                {copyMessage && (
+                    <MUI.Typography role="status" variant="caption" sx={{ display: 'block', mt: 0.5 }}>
+                        {copyMessage}
+                    </MUI.Typography>
+                )}
                 {error && (
                     <MUI.Alert severity="error" sx={{ mt: 1, py: 0 }}>
                         {error}

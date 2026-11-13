@@ -1,16 +1,22 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 // eslint-disable-next-line no-unused-vars
 import * as MUI from '@mui/material'
+import copy from 'copy-to-clipboard'
 import { getRandomAnime } from '../services/animeApi.js'
 
 function RandomAnime() {
     const [anime, setAnime] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
+    const [copyMessage, setCopyMessage] = useState('')
+    const copyMessageTimeout = useRef(null)
+
+    useEffect(() => () => clearTimeout(copyMessageTimeout.current), [])
 
     const loadRandomAnime = useCallback(async () => {
         setLoading(true)
         setError('')
+        setCopyMessage('')
 
         try {
             const randomAnime = await getRandomAnime()
@@ -30,6 +36,15 @@ function RandomAnime() {
     useEffect(() => {
         loadRandomAnime()
     }, [loadRandomAnime])
+
+    function showCopyMessage(message) {
+        clearTimeout(copyMessageTimeout.current)
+        setCopyMessage(message)
+        copyMessageTimeout.current = setTimeout(() => {
+            setCopyMessage('')
+            copyMessageTimeout.current = null
+        }, 2000)
+    }
 
     const image =
         anime?.images?.jpg?.large_image_url ||
@@ -80,6 +95,15 @@ function RandomAnime() {
     const episodes = anime?.episodes ?? 'N/A'
     const status = anime?.status || 'N/A'
     const synopsis = anime?.synopsis || 'No synopsis available.'
+
+    function handleCopyTitle() {
+        try {
+            const copied = copy(title)
+            showCopyMessage(copied ? 'Title copied to clipboard.' : 'Could not copy title to clipboard.')
+        } catch {
+            showCopyMessage('Could not copy title to clipboard.')
+        }
+    }
 
     return (
         <MUI.Container component="main" maxWidth="lg" sx={{ py: 5 }}>
@@ -214,6 +238,27 @@ function RandomAnime() {
                                 >
                                     Show on MyAnimeList
                                 </MUI.Button>
+                            )}
+                            <MUI.Button
+                                onClick={handleCopyTitle}
+                                sx={{
+                                    mb: 2,
+                                    ml: { xs: 0, sm: 1 },
+                                    color: '#e6ac3d',
+                                    border: '1px solid #e6ac3d',
+                                    '&:hover': {
+                                        borderColor: '#e4a039',
+                                        bgcolor: 'rgba(234, 175, 65, 0.14)',
+                                    },
+                                }}
+                                variant="outlined"
+                            >
+                                Copy title
+                            </MUI.Button>
+                            {copyMessage && (
+                                <MUI.Typography role="status" variant="caption" sx={{ display: 'block', mb: 1 }}>
+                                    {copyMessage}
+                                </MUI.Typography>
                             )}
 
                             <MUI.Typography variant="body1" sx={{ color: '#ead8c2', mb: 2 }}>
