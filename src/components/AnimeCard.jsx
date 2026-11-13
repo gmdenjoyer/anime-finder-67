@@ -130,7 +130,15 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
                 >
                     {[year, type, episodeText].filter(Boolean).join(' · ') || ''}
                 </MUI.Typography>
-                <MUI.Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
+                <MUI.Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: { xs: 'column', sm: 'row' },
+                        alignItems: { xs: 'stretch', sm: 'flex-start' },
+                        gap: 1,
+                        mt: 1,
+                    }}
+                >
                     {myAnimeListUrl && (
                         <MUI.Button
                             size="small"
@@ -139,6 +147,9 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
                             target="_blank"
                             rel="noopener noreferrer"
                             sx={{
+                                width: { xs: '100%', sm: 'auto' },
+                                justifyContent: 'center',
+                                textAlign: 'center',
                                 color: '#e6ac3d',
                                 '&:hover': { bgcolor: 'rgba(234, 175, 65, 0.14)' },
                             }}
@@ -152,6 +163,9 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
                             onClick={handleRecommendations}
                             disabled={loading}
                             sx={{
+                                width: { xs: '100%', sm: 'auto' },
+                                justifyContent: 'center',
+                                textAlign: 'center',
                                 color: '#e6ac3d',
                                 '&:hover': { bgcolor: 'rgba(234, 175, 65, 0.14)' },
                             }}
