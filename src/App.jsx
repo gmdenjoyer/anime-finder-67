@@ -1,7 +1,6 @@
 // Core no-unused-vars doesn't detect component references in JSX.
 // eslint-disable-next-line no-unused-vars
 import * as Router from 'react-router-dom'
-// eslint-disable-next-line no-unused-vars
 import * as MUI from '@mui/material'
 // eslint-disable-next-line no-unused-vars
 import Navbar from './components/Navbar.jsx'
@@ -11,6 +10,15 @@ import Search from './pages/Search.jsx'
 import AiringNow from './pages/AiringNow.jsx'
 // eslint-disable-next-line no-unused-vars
 import RandomAnime from './pages/RandomAnime.jsx'
+
+const theme = MUI.createTheme({
+    palette: {
+        mode: 'dark',
+        primary: { main: '#60a5fa' },
+        background: { default: '#071426', paper: '#102641' },
+        text: { primary: '#eaf3ff', secondary: '#b6c8de' },
+    },
+})
 
 // eslint-disable-next-line no-unused-vars
 function HomePage() {
@@ -41,15 +49,18 @@ function HomePage() {
 
 function App() {
     return (
-        <Router.BrowserRouter basename={import.meta.env.BASE_URL}>
-            <Navbar />
-            <Router.Routes>
-                <Router.Route path="/" element={<HomePage />} />
-                <Router.Route path="/airingnow" element={<AiringNow />} />
-                <Router.Route path="/search" element={<Search />} />
-                <Router.Route path="/random" element={<RandomAnime />} />
-            </Router.Routes>
-        </Router.BrowserRouter>
+        <MUI.ThemeProvider theme={theme}>
+            <MUI.CssBaseline />
+            <Router.BrowserRouter basename={import.meta.env.BASE_URL}>
+                <Navbar />
+                <Router.Routes>
+                    <Router.Route path="/" element={<HomePage />} />
+                    <Router.Route path="/airingnow" element={<AiringNow />} />
+                    <Router.Route path="/search" element={<Search />} />
+                    <Router.Route path="/random" element={<RandomAnime />} />
+                </Router.Routes>
+            </Router.BrowserRouter>
+        </MUI.ThemeProvider>
     )
 }
 

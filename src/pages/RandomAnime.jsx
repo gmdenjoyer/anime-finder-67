@@ -97,10 +97,10 @@ function RandomAnime() {
                     onClick={loadRandomAnime}
                     disabled={loading}
                     sx={{
-                        bgcolor: '#d8a8ff',
-                        color: '#17131f',
+                        bgcolor: '#60a5fa',
+                        color: '#071426',
                         fontWeight: 700,
-                        '&:hover': { bgcolor: '#c084fc' },
+                        '&:hover': { bgcolor: '#93c5fd' },
                     }}
                 >
                     {loading ? 'Loading…' : 'Surprise me'}
@@ -122,9 +122,9 @@ function RandomAnime() {
             {!loading && !error && anime && (
                 <MUI.Card
                     sx={{
-                        bgcolor: '#211d2b',
-                        color: '#f3f4f6',
-                        border: '1px solid #393344',
+                        bgcolor: '#102641',
+                        color: '#eaf3ff',
+                        border: '1px solid #244668',
                         overflow: 'hidden',
                     }}
                 >
@@ -157,9 +157,9 @@ function RandomAnime() {
                                     height: { xs: 360, md: 420 },
                                     display: 'grid',
                                     placeItems: 'center',
-                                    bgcolor: '#292631',
+                                    bgcolor: '#153457',
                                     borderRadius: 2,
-                                    color: '#c4bfcc',
+                                    color: '#b6c8de',
                                     typography: 'caption',
                                     textAlign: 'center',
                                     p: 2,
@@ -179,7 +179,7 @@ function RandomAnime() {
                             </MUI.Typography>
 
                             {anime.title && anime.title !== title && (
-                                <MUI.Typography variant="h6" sx={{ color: '#c4bfcc', mb: 2 }}>
+                                <MUI.Typography variant="h6" sx={{ color: '#b6c8de', mb: 2 }}>
                                     {anime.title}
                                 </MUI.Typography>
                             )}
@@ -195,36 +195,36 @@ function RandomAnime() {
                                         key={item}
                                         label={item}
                                         sx={{
-                                            bgcolor: '#292631',
-                                            color: '#f3f4f6',
-                                            border: '1px solid #51495e',
+                                            bgcolor: '#153457',
+                                            color: '#eaf3ff',
+                                            border: '1px solid #31577c',
                                         }}
                                     />
                                 ))}
                             </MUI.Box>
 
-                            <MUI.Typography variant="body1" sx={{ color: '#d4d1d9', mb: 2 }}>
-                                <MUI.Box component="span" sx={{ fontWeight: 700, color: '#d8a8ff' }}>
+                            <MUI.Typography variant="body1" sx={{ color: '#c7d8eb', mb: 2 }}>
+                                <MUI.Box component="span" sx={{ fontWeight: 700, color: '#93c5fd' }}>
                                     Score:
                                 </MUI.Box>{' '}
                                 {score}
                             </MUI.Typography>
 
-                            <MUI.Typography variant="body1" sx={{ color: '#d4d1d9', mb: 2 }}>
-                                <MUI.Box component="span" sx={{ fontWeight: 700, color: '#d8a8ff' }}>
+                            <MUI.Typography variant="body1" sx={{ color: '#c7d8eb', mb: 2 }}>
+                                <MUI.Box component="span" sx={{ fontWeight: 700, color: '#93c5fd' }}>
                                     Genres:
                                 </MUI.Box>{' '}
                                 {genres}
                             </MUI.Typography>
 
-                            <MUI.Typography variant="body1" sx={{ color: '#d4d1d9', mb: 2 }}>
-                                <MUI.Box component="span" sx={{ fontWeight: 700, color: '#d8a8ff' }}>
+                            <MUI.Typography variant="body1" sx={{ color: '#c7d8eb', mb: 2 }}>
+                                <MUI.Box component="span" sx={{ fontWeight: 700, color: '#93c5fd' }}>
                                     Studio:
                                 </MUI.Box>{' '}
                                 {studios}
                             </MUI.Typography>
 
-                            <MUI.Typography variant="body1" sx={{ color: '#f3f4f6', lineHeight: 1.8 }}>
+                            <MUI.Typography variant="body1" sx={{ color: '#eaf3ff', lineHeight: 1.8 }}>
                                 {synopsis}
                             </MUI.Typography>
                         </MUI.Box>

@@ -69,9 +69,9 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
             sx={{
                 display: 'flex',
                 height: '100%',
-                bgcolor: '#211d2b',
-                color: '#f3f4f6',
-                border: '1px solid #393344',
+                bgcolor: '#102641',
+                color: '#eaf3ff',
+                border: '1px solid #244668',
             }}
         >
             {image ? (
@@ -90,8 +90,8 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
                         flexShrink: 0,
                         display: 'grid',
                         placeItems: 'center',
-                        bgcolor: '#292631',
-                        color: '#c4bfcc',
+                        bgcolor: '#153457',
+                        color: '#b6c8de',
                         typography: 'caption',
                         textAlign: 'center',
                         p: 1,
@@ -104,13 +104,13 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
                 <MUI.Typography
                     variant="h6"
                     component="h3"
-                    sx={{ lineHeight: 1.3, color: '#f3f4f6' }}
+                    sx={{ lineHeight: 1.3, color: '#eaf3ff' }}
                 >
                     {title}
                 </MUI.Typography>
                 <MUI.Typography
                     variant="body2"
-                    sx={{ mt: 0.5, color: '#c4bfcc' }}
+                    sx={{ mt: 0.5, color: '#b6c8de' }}
                 >
                     {[year, type, episodeText].filter(Boolean).join(' · ') || ''}
                 </MUI.Typography>
@@ -122,8 +122,8 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
                         sx={{
                             mt: 1,
                             ml: -1,
-                            color: '#d8a8ff',
-                            '&:hover': { bgcolor: 'rgba(216, 168, 255, 0.12)' },
+                            color: '#93c5fd',
+                            '&:hover': { bgcolor: 'rgba(96, 165, 250, 0.16)' },
                         }}
                     >
                         {loading ? 'Loading…' : 'Get recommendations'}

@@ -12,7 +12,7 @@ const navigationItems = [
 
 function Navbar() {
     return (
-        <MUI.AppBar position="static" elevation={0} sx={{ bgcolor: '#17131f' }}>
+        <MUI.AppBar position="static" elevation={0} sx={{ bgcolor: '#0a1c33' }}>
             <MUI.Toolbar
                 component="nav"
                 aria-label="Main navigation"
@@ -66,8 +66,8 @@ function Navbar() {
                                     bgcolor: 'rgba(255, 255, 255, 0.08)',
                                 },
                                 '&.active': {
-                                    color: '#d8a8ff',
-                                    bgcolor: 'rgba(216, 168, 255, 0.12)',
+                                    color: '#93c5fd',
+                                    bgcolor: 'rgba(96, 165, 250, 0.16)',
                                 },
                             }}
                         >
