@@ -41,7 +41,7 @@ function HomePage() {
 
 function App() {
     return (
-        <Router.BrowserRouter>
+        <Router.BrowserRouter basename={import.meta.env.BASE_URL}>
             <Navbar />
             <Router.Routes>
                 <Router.Route path="/" element={<HomePage />} />
