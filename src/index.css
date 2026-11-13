@@ -12,14 +12,21 @@
     box-sizing: border-box;
 }
 
+html {
+    min-height: 100%;
+    background-color: #100100;
+}
+
 body {
     margin: 0;
     min-width: 320px;
     min-height: 100vh;
-    background: #100100;
+    min-height: 100dvh;
+    background-color: #100100;
 }
 
 #root {
     min-height: 100vh;
-    background: #100100;
+    min-height: 100dvh;
+    background-color: #100100;
 }
