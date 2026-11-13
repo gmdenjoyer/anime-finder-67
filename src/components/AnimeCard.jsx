@@ -154,7 +154,14 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
                     No image
                 </MUI.Box>
             )}
-            <MUI.CardContent sx={{ minWidth: 0, flexGrow: 1 }}>
+            <MUI.CardContent
+                sx={{
+                    minWidth: 0,
+                    flexGrow: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+            >
                 <MUI.Typography
                     variant="h6"
                     component="h3"
@@ -168,58 +175,59 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
                 >
                     {[year, type, episodeText].filter(Boolean).join(' · ') || ''}
                 </MUI.Typography>
-                <MUI.Box
-                    sx={{
-                        display: 'grid',
-                        gridTemplateColumns: {
-                            xs: 'minmax(0, 1fr)',
-                            sm: 'repeat(auto-fit, max-content)',
-                        },
-                        justifyContent: 'start',
-                        gap: 1,
-                        mt: 1,
-                    }}
-                >
-                    {myAnimeListUrl && (
-                        <MUI.Button
-                            size="small"
-                            component="a"
-                            href={myAnimeListUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            sx={actionButtonSx}
-                        >
-                            Show on MyAnimeList
-                        </MUI.Button>
-                    )}
-                    {onRecommendationsLoaded && (
-                        <MUI.Button
-                            size="small"
-                            onClick={handleRecommendations}
-                            disabled={loading}
-                            sx={actionButtonSx}
-                        >
-                            {loading ? 'Loading…' : 'Get recommendations'}
-                        </MUI.Button>
-                    )}
-                    <MUI.Button
-                        size="small"
-                        onClick={handleCopyTitle}
-                        sx={actionButtonSx}
+                <MUI.Box sx={{ mt: 'auto', pt: 1 }}>
+                    <MUI.Box
+                        sx={{
+                            display: 'grid',
+                            gridTemplateColumns: {
+                                xs: 'minmax(0, 1fr)',
+                                sm: 'repeat(auto-fit, max-content)',
+                            },
+                            justifyContent: 'start',
+                            gap: 1,
+                        }}
                     >
-                        Copy title
-                    </MUI.Button>
+                        {myAnimeListUrl && (
+                            <MUI.Button
+                                size="small"
+                                component="a"
+                                href={myAnimeListUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                sx={actionButtonSx}
+                            >
+                                Show on MyAnimeList
+                            </MUI.Button>
+                        )}
+                        {onRecommendationsLoaded && (
+                            <MUI.Button
+                                size="small"
+                                onClick={handleRecommendations}
+                                disabled={loading}
+                                sx={actionButtonSx}
+                            >
+                                {loading ? 'Loading…' : 'Get recommendations'}
+                            </MUI.Button>
+                        )}
+                        <MUI.Button
+                            size="small"
+                            onClick={handleCopyTitle}
+                            sx={actionButtonSx}
+                        >
+                            Copy title
+                        </MUI.Button>
+                    </MUI.Box>
+                    {copyMessage && (
+                        <MUI.Typography role="status" variant="caption" sx={{ display: 'block', mt: 0.5 }}>
+                            {copyMessage}
+                        </MUI.Typography>
+                    )}
+                    {error && (
+                        <MUI.Alert severity="error" sx={{ mt: 1, py: 0 }}>
+                            {error}
+                        </MUI.Alert>
+                    )}
                 </MUI.Box>
-                {copyMessage && (
-                    <MUI.Typography role="status" variant="caption" sx={{ display: 'block', mt: 0.5 }}>
-                        {copyMessage}
-                    </MUI.Typography>
-                )}
-                {error && (
-                    <MUI.Alert severity="error" sx={{ mt: 1, py: 0 }}>
-                        {error}
-                    </MUI.Alert>
-                )}
             </MUI.CardContent>
         </MUI.Card>
     )
