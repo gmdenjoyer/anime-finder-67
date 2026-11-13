@@ -1,4 +1,6 @@
 const BASE_URL = "https://jikan.lucashdo.com/v1";
+const MAX_RANDOM_ANIME_ATTEMPTS = 10;
+const EXCLUDED_RANDOM_GENRES = new Set(["ecchi", "hentai"]);
 
 export async function getSeasonNow() {
     const response = await fetch(
@@ -27,16 +29,30 @@ export async function searchAnime(query) {
 }
 
 export async function getRandomAnime() {
-    const response = await fetch(
-        `${BASE_URL}/random/anime`
-    );
+    for (let attempt = 0; attempt < MAX_RANDOM_ANIME_ATTEMPTS; attempt += 1) {
+        const response = await fetch(`${BASE_URL}/random/anime`);
 
-    if (!response.ok) {
-        throw new Error(`API response code: ${response.status}`);
+        if (!response.ok) {
+            throw new Error(`API response code: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const anime = data.data;
+        if (!anime) {
+            throw new Error("Random anime response did not include anime data.");
+        }
+
+        const genres = (anime.genres ?? []).map((genre) =>
+            typeof genre === "string" ? genre : genre?.name,
+        )
+        if (!genres.some((genre) => EXCLUDED_RANDOM_GENRES.has(genre?.toLowerCase()))) {
+            return anime;
+        }
     }
 
-    const data = await response.json();
-    return data.data;
+    throw new Error(
+        `Could not find anime without Ecchi or Hentai genres after ${MAX_RANDOM_ANIME_ATTEMPTS} attempts.`,
+    );
 }
 
 export async function getAnimeRecommendations(id) {
