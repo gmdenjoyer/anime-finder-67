@@ -9,4 +9,4 @@ The site is deployed to GitHub Pages by the workflow in
 
 To enable deployment, open the repository's **Settings → Pages** and set the
 build and deployment source to **GitHub Actions**. The published site will be
-available at <https://gmdenjoyer.github.io/anime-recommendation-website-67/>.
+available at <https://gmdenjoyer.github.io/anime-finder-67/>.
