@@ -23,11 +23,24 @@ function AnimeCard({ anime, onRecommendationsLoaded }) {
         for (const candidate of candidates) {
             if (candidate == null || candidate === '') continue
 
+            const compactDate =
+                typeof candidate === 'number' || typeof candidate === 'string'
+                    ? String(candidate).match(/^(\d{4})\d{4}$/)
+                    : null
+            if (compactDate) {
+                return Number(compactDate[1])
+            }
+
             if (typeof candidate === 'number' && Number.isFinite(candidate)) {
                 return candidate
             }
 
             if (typeof candidate === 'string') {
+                const yearFromDate = candidate.match(/^(\d{4})(?:[-/]|$)/)
+                if (yearFromDate) {
+                    return Number(yearFromDate[1])
+                }
+
                 const numericValue = Number(candidate)
                 if (Number.isFinite(numericValue)) {
                     return numericValue
